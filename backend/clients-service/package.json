@@ -1,0 +1,23 @@
+{
+  "name": "clients-service",
+  "version": "1.0.0",
+  "description": "Microservicio para el registro de clientes y gestión de integraciones.",
+  "main": "server.js", 
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@hapi/hapi": "^21.4.4",
+    "axios": "^1.7.2",             
+    "dotenv": "^17.2.3",
+    "mysql2": "^3.15.3",
+    "redis": "^4.6.14",             
+    "amqplib": "^0.10.4",
+    "joi": "^17.9.2"         
+  }
+}

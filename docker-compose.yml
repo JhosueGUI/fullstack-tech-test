@@ -1,0 +1,127 @@
+version: '3.8'
+
+services:
+  # === 1. MICROSERVICIO DE SEGURIDAD (EXISTENTE) ===
+  mysql_security:
+    image: mysql:8.0
+    container_name: mysql_security_db
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "3307:3307" # Para acceso externo (DBeaver/MySQL Client)
+    volumes:
+      - security_db_data:/var/lib/mysql
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "${DB_USER}", "-p${DB_PASSWORD}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - internal_network
+
+  security-service:
+    build:
+      context: ./backend/security-service
+      dockerfile: Dockerfile
+    container_name: security_microservice
+    env_file:
+      - ./backend/security-service/.env
+    ports:
+      - "3000:3000"
+    depends_on:
+      mysql_security:
+        condition: service_healthy
+    networks:
+      - internal_network
+
+  # === 2. MICROSERVICIO DE CLIENTES (NUEVOS SERVICIOS) ===
+
+  # 2.1 BASE DE DATOS PARA CLIENTES
+  mysql_clients:
+    image: mysql:8.0
+    container_name: mysql_clients_db
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: clients_db
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "3306:3306"
+    volumes:
+      - clients_db_data:/var/lib/mysql
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "${DB_USER}", "-p${DB_PASSWORD}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - internal_network
+
+  # 2.2 SERVIDOR REDIS (CACHE)
+  redis:
+    image: redis:7.2-alpine
+    container_name: redis_cache
+    networks:
+      - internal_network
+
+  # 2.3 RABBITMQ (MESSAGE BROKER)
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: rabbitmq_broker
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    ports:
+      - "15672:15672" # Puerto de la interfaz de gestión (opcional)
+    networks:
+      - internal_network
+
+  # 2.4 MICROSERVICIO DE CLIENTES (HAPI)
+  clients-service:
+    build:
+      context: ./backend/clients-service
+      dockerfile: Dockerfile # ASUMIENDO QUE YA CREASTE ESTE DOCKERFILE
+    container_name: clients_microservice
+    env_file:
+      - ./backend/clients-service/.env
+    ports:
+      - "3001:3001"
+    depends_on:
+      mysql_clients:
+        condition: service_healthy
+      redis:
+        condition: service_started
+      rabbitmq:
+        condition: service_started
+      security-service:
+        condition: service_started
+    networks:
+      - internal_network
+    # 3. MICROSERVICIO DE CORREOS (CONSUMIDOR DE RABBITMQ)
+  email-service:
+    build:
+      context: ./backend/email-service
+      dockerfile: Dockerfile
+    container_name: email_consumer_microservice
+    env_file:
+      - ./backend/email-service/.env
+    depends_on:
+      mysql_clients:
+        condition: service_healthy # Necesita la DB de Clientes para los logs
+      rabbitmq:
+        condition: service_started # Necesita RabbitMQ para consumir
+    networks:
+      - internal_network
+
+# === VOLÚMENES Y REDES ===
+volumes:
+  security_db_data:
+  clients_db_data:
+    # Nuevo volumen para la DB de clientes
+
+networks:
+  internal_network:
+    driver: bridge
