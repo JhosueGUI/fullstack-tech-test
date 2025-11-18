@@ -1,0 +1,125 @@
+.register-container {
+  background: #121312;
+  padding: 20px;
+  width: 90%;
+  max-width: 520px;
+  margin: auto;
+  color: #ffffff;
+  font-family: sans-serif;
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+.title {
+  font-family: Montserrat, sans-serif;
+  color: #f8f8f8;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 32px;
+}
+
+.subtitle {
+  font-family: Montserrat, sans-serif;
+  color: #acacac;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 24px;
+}
+
+.required-msg {
+  font-family: Montserrat, sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  margin-bottom: 15px;
+}
+.required-desc{
+    color: #acacac;
+}
+.required-icon {
+  color: #008a1b;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  margin-bottom: 20px;
+}
+.input-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+input,
+select {
+  background: #222422;
+  border: 1px solid #444;
+  border-radius: 6px;
+  padding: 12px;
+  color: #f2f2f2;
+  font-size: 16px;
+  appearance: none;
+   
+}
+
+select {
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg width='10' height='10' viewBox='0 0 10 10' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M1 3l4 4 4-4'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 12px;
+  width: 100%;
+}
+
+.warning-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  border: 1px solid #fd8721;
+  color:#fd8721 ;
+  padding: 12px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  font-family: Montserrat, sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+}
+
+.code-box {
+  background: #1b1b1b;
+  padding: 12px;
+  border: 1px solid #444;
+  border-radius: 6px;
+  font-size: 16px;
+}
+
+.btn-submit {
+  width: 100%;
+  background: #00994f;
+  border: none;
+  padding: 14px;
+  color: white;
+  font-size: 18px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.btn-submit:hover {
+  background: #00b95f;
+}

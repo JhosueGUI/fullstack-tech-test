@@ -5,7 +5,11 @@
   <header class="bonus-header">
     <div class="logo-container">
       <figure>
-        <img src="https://www.lafija.com/storage/v1/public/LF_logo_2.webp" alt="La Fija Logo" class="logo">
+        <img
+          src="https://www.lafija.com/storage/v1/public/LF_logo_2.webp"
+          alt="La Fija Logo"
+          class="logo"
+        />
       </figure>
     </div>
   </header>
@@ -13,25 +17,22 @@
   <!-- CONTENIDO DINÁMICO -->
   <main class="bonus-content">
     <ng-container [ngSwitch]="currentStep">
-      <app-bonus-step
-        *ngSwitchCase="'bonus'"
-        (bonusSelected)="goToForm($event)">
-      </app-bonus-step>
+      <app-bonus-step *ngSwitchCase="'bonus'" (bonusSelected)="goToForm($event)"> </app-bonus-step>
 
       <!-- Aquí luego puedes agregar más pasos -->
-      <!-- <app-form-step *ngSwitchCase="'form'"></app-form-step> -->
+      <app-register-step *ngSwitchCase="'form'"> </app-register-step>
     </ng-container>
   </main>
 
   <!-- FOOTER FIJO -->
   <footer class="help-footer">
     <div class="help-content">
-        <span class="help-text">¿Necesita Ayuda?</span>
+      <span class="help-text">¿Necesita Ayuda?</span>
     </div>
-    
+
     <div class="login-content">
-        <span class="login-question">¿Ya tienes cuenta?</span>
-        <a href="#" class="login-link">Inicia sesión aquí</a>
+      <span class="login-question">¿Ya tienes cuenta?</span>
+      <a href="#" class="login-link">Inicia sesión aquí</a>
     </div>
-</footer>
+  </footer>
 </div>
