@@ -11,9 +11,19 @@ import { CommonModule } from '@angular/common';
 })
 export class BonusStep {
   @Output() bonusSelected = new EventEmitter<string>();
+  
+  // Estado para rastrear el bono seleccionado antes de confirmar
+  selectedBonus: string | null = null; 
 
-  // Llamado al hacer click en una opción
-  select(bono: string) {
-    this.bonusSelected.emit(bono);
+  // Marca un bono como seleccionado (solo guarda el valor)
+  selectBonus(bono: string) {
+    this.selectedBonus = bono;
+  }
+
+  // Emite el evento para avanzar al siguiente paso
+  confirmSelection() {
+    if (this.selectedBonus) {
+      this.bonusSelected.emit(this.selectedBonus);
+    }
   }
 }

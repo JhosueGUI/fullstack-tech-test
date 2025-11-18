@@ -1,63 +1,59 @@
-<header class="bonus-header">
-    <div class="logo-container">
-        <figure>
-            <img src="https://www.lafija.com/storage/v1/public/LF_logo_2.webp" alt="La Fija Logo" class="logo">
-        </figure>
-    </div>
-</header>
-
 <main class="bonus-content">
-
     <section class="bonus-title">
         <span class="registro">Empieza tu registro</span>
         <span class="elige">Eligiendo tu bono de bienvenida</span>
     </section>
 
     <section class="bonus-options-container">
-        <div class="bonus-card">
-            <div class="bonus-tag">
-                1
-            </div>
+        <div 
+          class="bonus-card" 
+          [class.selected]="selectedBonus === '100 Giros gratis'"
+          (click)="selectBonus('100 Giros gratis')" 
+          role="button" 
+          tabindex="0">
+            <div class="bonus-tag">1</div>
             <div class="bonus-content-text">
                 <span class="bonus-title">100 Giros gratis</span>
                 <span class="bonus-subtitle">Para Casino</span>
             </div>
-            <div class="bonus-graphic">
-            </div>
+            <div class="bonus-graphic"></div>
         </div>
-        <div class="bonus-card">
-            <div class="bonus-tag">
-                1
-            </div>
+
+        <div 
+          class="bonus-card" 
+          [class.selected]="selectedBonus === 'Apuesta gratis S/30'"
+          (click)="selectBonus('Apuesta gratis S/30')" 
+          role="button" 
+          tabindex="0">
+            <div class="bonus-tag">2</div>
             <div class="bonus-content-text">
                 <span class="bonus-title">Apuesta gratis S/30</span>
                 <span class="bonus-subtitle">Para Deportes</span>
             </div>
-            <div class="bonus-graphic-2">
-            </div>
+            <div class="bonus-graphic-2"></div>
         </div>
-        <div class="bonus-card">
-            <div class="bonus-tag">
-                1
-            </div>
+        
+        <div 
+          class="bonus-card" 
+          [class.selected]="selectedBonus === 'Sin bono'"
+          (click)="selectBonus('Sin bono')" 
+          role="button" 
+          tabindex="0">
+            <div class="bonus-tag">3</div>
             <div class="bonus-content-text">
                 <span class="bonus-title">Sin bono</span>
                 <span class="bonus-subtitle">Escríbenos si cambias de opinión</span>
             </div>
-            
         </div>
     </section>
-
 </main>
 
 <footer class="bonus-footer">
-
-    <button class="bonus-option no-bonus-option" (click)="select('Sin bono')" aria-label="Continuar sin bono">
-        <div class="text">
-            <h3>Sin bono</h3>
-            <p>Continuar sin bono</p>
-        </div>
-        <img src="/assets/icons/info.png" alt="Icono de información" class="icon">
+    <button 
+        class="bonus-option continue-option" 
+        [disabled]="!selectedBonus"
+        (click)="confirmSelection()"
+        aria-label="Continuar con la selección de bono">
+        CONTINUAR
     </button>
-
 </footer>
