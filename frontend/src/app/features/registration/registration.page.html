@@ -1,1 +1,10 @@
-<p>registration works!</p>
+<div class="background"></div>
+<div class="modal">
+  <ng-container [ngSwitch]="currentStep">
+    <app-bonus-step
+      *ngSwitchCase="'bonus'"
+      (bonusSelected)="goToForm($event)">
+    </app-bonus-step>
+
+  </ng-container>
+</div>

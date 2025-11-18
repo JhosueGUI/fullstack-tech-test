@@ -1,0 +1,97 @@
+/* src/app/features/registration/bonus-step/bonus-step.css */
+
+:host {
+    display: block;
+    color: white;
+}
+
+.logo {
+    display: block;
+    margin: 0 auto 24px auto;
+    width: 180px;
+    height: auto;
+}
+
+.bonus-title {
+    display: flex;
+    flex-direction: column;
+}
+
+.bonus-title .registro {
+    font-family: Montserrat, sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    color: #f8f8f8;
+    line-height: 24px;
+}
+
+.bonus-title .elige {
+    font-family: Montserrat, sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 24px;
+    color: #acacac;
+    margin-top: 4px;
+}
+
+.bonus-content {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    gap: 20px;
+}
+
+p {
+    color: #acacac;
+    margin-bottom: 16px;
+}
+
+/* === CARD BONUS OPTION === */
+.bonus-title {
+    color: rgb(85, 234, 127);
+    font-family: Montserrat, sans-serif;
+    font-style: italic;
+    font-size: 28px;
+    font-weight: 600;
+}
+
+.bonus-subtitle {
+    font-family: Montserrat, sans-serif;
+    font-size: 18px;
+    
+}
+
+.bonus-card {
+    background-image: url('https://i.imgur.com/yO5BlNR.jpg');
+    background-size: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 100%;
+    max-width: 600px;
+    height: 120px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+}
+
+.bonus-graphic {
+    width: 35%;
+    height: 100%;
+    background-image: url('https://i.imgur.com/7VoxwwC.png');
+    background-size: 135px;
+    background-repeat: no-repeat;
+    background-position: right center;
+    margin-right: -12px;
+}
+.bonus-graphic-2 {
+    width: 35%;
+    height: 100%;
+    background-image: url('https://i.imgur.com/aS3tZNd.png');
+    background-size: 135px;
+    background-repeat: no-repeat;
+    background-position: right center;
+    margin-right: -12px;
+}
