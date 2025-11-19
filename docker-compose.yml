@@ -75,6 +75,7 @@ services:
       RABBITMQ_DEFAULT_USER: guest
       RABBITMQ_DEFAULT_PASS: guest
     ports:
+      - "5672:5672"
       - "15672:15672" # Puerto de la interfaz de gestión (opcional)
     networks:
       - internal_network

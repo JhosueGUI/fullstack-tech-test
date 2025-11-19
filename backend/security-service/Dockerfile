@@ -23,4 +23,4 @@ EXPOSE 3000
 
 # 5. Comando de inicio (Entrypoint)
 # Define el comando que se ejecuta cuando el contenedor se inicia.
-CMD [ "node", "server.js" ]
+CMD [ "node", "src/index.js" ]

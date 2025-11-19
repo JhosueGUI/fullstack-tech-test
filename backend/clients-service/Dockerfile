@@ -12,4 +12,4 @@ COPY . .
 # Expone el puerto del servicio de Clientes
 EXPOSE 3001
 
-CMD [ "node", "server.js" ]
+CMD [ "node", "src/index.js" ]
