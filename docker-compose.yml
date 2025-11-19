@@ -11,7 +11,7 @@ services:
       MYSQL_USER: ${DB_USER}
       MYSQL_PASSWORD: ${DB_PASSWORD}
     ports:
-      - "3307:3307" # Para acceso externo (DBeaver/MySQL Client)
+      - "3307:3306" # Para acceso externo (DBeaver/MySQL Client)
     volumes:
       - security_db_data:/var/lib/mysql
     healthcheck:
