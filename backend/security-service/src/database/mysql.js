@@ -4,10 +4,9 @@ const mysql = require('mysql2/promise');
 
 let pool;
 
-/**
- * Inicializa el pool de conexiones a MySQL con lógica de reintento.
- * @param {number} retries - Número máximo de intentos de conexión.
- */
+
+//Inicializa el pool de conexiones a MySQL con lógica de reintento.
+
 const initDB = async (retries = 5) => {
     for (let i = 0; i < retries; i++) {
         try {
@@ -37,12 +36,7 @@ const initDB = async (retries = 5) => {
     }
 };
 
-/**
- * Función de utilidad para ejecutar consultas usando el pool.
- * @param {string} sql - La consulta SQL.
- * @param {Array<any>} params - Los parámetros para la consulta.
- * @returns {Promise<[Array<any>, any]>} El resultado de la consulta.
- */
+//Función de utilidad para ejecutar consultas usando el pool.
 const queryDB = (sql, params) => {
     if (!pool) {
         throw new Error("Pool de base de datos no inicializado.");

@@ -8,6 +8,4 @@ RUN npm install --production
 
 COPY . .
 
-# No se expone ningún puerto
-
 CMD [ "node", "src/index.js" ]

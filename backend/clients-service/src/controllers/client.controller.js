@@ -10,7 +10,7 @@ const registerSchema = Joi.object({
     document_number: Joi.string().min(8).max(12).required(),
     names: Joi.string().max(100).required(),
     last_names: Joi.string().max(100).required(),
-    birth_date: Joi.date().iso().required(), // Formato ISO: YYYY-MM-DD
+    birth_date: Joi.date().iso().required(),
     phone_number: Joi.string().min(8).max(20).optional()
 });
 //handle para el endpoint de creación de cliente (POST /clients)

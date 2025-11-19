@@ -2,15 +2,11 @@
 
 const { createAndRegisterToken, validateToken } = require('../services/token.services');
 
-/**
- * Handler para el endpoint de generación de token (GET /token).
- */
+//Handler para el endpoint de generación de token (GET /token).
 const createTokenHandler = async (request, h) => {
     try {
-        // Llama a la lógica de negocio (Servicio)
         const token = await createAndRegisterToken();
         
-        // Retorna la respuesta HTTP (Hapi)
         return h.response({ 
             statusCode: 200, 
             message: 'Token generado exitosamente', 
@@ -19,7 +15,6 @@ const createTokenHandler = async (request, h) => {
 
     } catch (error) {
         console.error('Error en createTokenHandler:', error);
-        // Manejo de errores genérico (puedes añadir más detalles si es necesario)
         return h.response({ 
             statusCode: 500, 
             message: 'Error interno del servidor al generar token' 
@@ -27,13 +22,11 @@ const createTokenHandler = async (request, h) => {
     }
 };
 
-/**
- * Handler para el endpoint de validación de token (POST /validate).
- */
+//Handler para el endpoint de validación de token (POST /validate).
+
 const validateTokenHandler = async (request, h) => {
     const { token } = request.payload;
 
-    // Validación de entrada (Input Validation)
     if (!token || typeof token !== 'string' || token.length !== 8) {
         return h.response({ 
             statusCode: 400, 
@@ -42,9 +35,7 @@ const validateTokenHandler = async (request, h) => {
     }
 
     try {
-        // Llama a la lógica de negocio (Servicio)
         const isValid = await validateToken(token.toUpperCase()); 
-
         if (isValid) {
             return h.response({ 
                 statusCode: 200, 

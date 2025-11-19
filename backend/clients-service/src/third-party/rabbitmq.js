@@ -6,9 +6,8 @@ const amqp = require('amqplib');
 let channel;
 const QUEUE_NAME = 'email_queue';
 
-/**
- * Conecta al message broker y crea el canal de comunicación.
- */
+//Conecta al message broker y crea el canal de comunicación.
+
 const initRabbitMQ = async () => {
     const amqpUrl = `amqp://${process.env.RABBITMQ_USER}:${process.env.RABBITMQ_PASS}@${process.env.RABBITMQ_HOST}`;
 
@@ -28,9 +27,7 @@ const initRabbitMQ = async () => {
 };
 
 
-/**
- * Envía un mensaje a la cola de correos.
- */
+//Envía un mensaje a la cola de correos.
 const sendEmailOrder = (messageData) => {
     if (!channel) {
         console.warn("RabbitMQ no está conectado. El mensaje de correo no fue enviado.");

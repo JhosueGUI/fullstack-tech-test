@@ -1,11 +1,8 @@
-// src/models/emailLog.model.js
-// Contiene las operaciones de datos para la tabla de logs de correos
-
 const { queryDB } = require('../database/mysql');
 
-/**
- * Crea la tabla de logs de correos si no existe.
- */
+
+//Crea la tabla de logs de correos si no existe.
+
 const createLogTable = async () => {
     await queryDB(`
         CREATE TABLE IF NOT EXISTS email_logs (
@@ -20,12 +17,9 @@ const createLogTable = async () => {
     console.log("Tabla 'email_logs' verificada.");
 };
 
-/**
- * Registra el evento de envío de correo.
- * @param {number} clientId - ID del cliente.
- * @param {string} emailType - Tipo de correo (e.g., 'WELCOME').
- * @param {object} payload - Mensaje completo recibido de RabbitMQ.
- */
+
+//Registra el evento de envío de correo.
+
 const logEmailSent = async (clientId, emailType, payload) => {
     const sql = `
         INSERT INTO email_logs (client_id, email_type, status, message_payload)

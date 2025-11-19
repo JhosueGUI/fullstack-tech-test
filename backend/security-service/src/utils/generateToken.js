@@ -1,13 +1,8 @@
-// src/utils/generateToken.js
-
-/**
- * Función para generar un token alfanumérico aleatorio de 8 caracteres.
- */
+//funcion para generar token aleatorio
 const generateToken = () => {
-    // Lógica para generar un token alfanumérico aleatorio de 8 caracteres
     return Math.random().toString(36).substring(2, 10).toUpperCase();
 };
-
+//exportamos la funcion
 module.exports = {
     generateToken
 };

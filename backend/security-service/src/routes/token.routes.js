@@ -1,4 +1,3 @@
-// src/routes/token.routes.js
 
 const { createTokenHandler, validateTokenHandler } = require('../controllers/token.controller');
 
