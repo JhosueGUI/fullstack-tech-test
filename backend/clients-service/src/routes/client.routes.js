@@ -7,9 +7,11 @@ const clientRoutes = [
         method: 'POST',
         path: '/clients',
         options: {
+            cors: {
+                origin: ['http://localhost:4200'],
+            },
             validate: {
                 payload: registerSchema,
-                // failAction permanece en Rutas para manejar el error de validación de Hapi
                 failAction: (request, h, error) => {
                     return h.response({ 
                         statusCode: 400, 

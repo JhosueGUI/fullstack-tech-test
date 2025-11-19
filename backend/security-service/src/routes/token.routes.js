@@ -6,13 +6,21 @@ const tokenRoutes = [
     {
         method: 'GET',
         path: '/token',
-        // El handler ahora es una función del controlador
+        options: {
+            cors: {
+                origin: ['http://localhost:4200'],
+            }
+        },
         handler: createTokenHandler 
     },
     {
         method: 'POST',
         path: '/validate',
-        // El handler ahora es una función del controlador
+        options: {
+            cors: {
+                origin: ['http://localhost:4200'],
+            }
+        },
         handler: validateTokenHandler
     }
 ];
