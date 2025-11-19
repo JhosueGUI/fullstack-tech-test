@@ -1,7 +1,6 @@
 <div class="background"></div>
 
 <div class="modal">
-  <!-- HEADER FIJO -->
   <header class="bonus-header">
     <div class="logo-container">
       <figure>
@@ -14,28 +13,19 @@
     </div>
   </header>
 
-  <!-- CONTENIDO DINÁMICO -->
   <main class="bonus-content">
     <ng-container [ngSwitch]="currentStep">
       <app-bonus-step *ngSwitchCase="'bonus'" (bonusSelected)="goToForm($event)"> </app-bonus-step>
-
-      <!-- Aquí luego puedes agregar más pasos -->
       <app-register-step *ngSwitchCase="'form'"> </app-register-step>
     </ng-container>
   </main>
-
-  <!-- FOOTER FIJO -->
   <footer class="help-footer">
-    
     <div class="help-content">
       <a href="https://imgbb.com/"><img class="icon-help" src="https://i.ibb.co/cXy9pSw5/conversacion-2.png" alt="conversacion-2" border="0"></a>
       <span class="help-text">¿Necesita Ayuda?</span>
     </div>
-
     <div class="login-content">
-      
       <span class="login-question">¿Ya tienes cuenta?</span>
-      
       <a href="#" class="login-link">Inicia sesión aquí</a>
     </div>
   </footer>

@@ -4,7 +4,6 @@
     <span class="subtitle">Completa tus datos personales</span>
   </div>
   
-  <!-- Mensajes de Estado (Error y Éxito) -->
   <div *ngIf="errorMessage" class="error-box error">
     {{ errorMessage }}
   </div>
@@ -17,7 +16,6 @@
     <span class="required-desc">Campo obligatorio</span>
   </div>
 
-  <!-- Grupo: Documento y Número -->
   <div class="grid-2">
     <div class="input-group">
       <label>Documento *</label>
@@ -34,7 +32,6 @@
     </div>
   </div>
 
-  <!-- Advertencia de Nombres/Apellidos -->
   <div class="warning-box">
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="mi-icono-personalizado">
       <path d="M12 1.5C6.20156 1.5 1.5 6.20156 1.5 12C1.5 17.7984 6.20156 22.5 12 22.5C17.7984 22.5 22.5 17.7984 22.5 12C22.5 6.20156 17.7984 1.5 12 1.5ZM12 20.7188C7.18594 20.7188 3.28125 16.8141 3.28125 12C3.28125 7.18594 7.18594 3.28125 12 3.28125C16.8141 3.28125 20.7188 7.18594 20.7188 12C20.7188 16.8141 16.8141 20.7188 12 20.7188Z" fill="currentColor"></path>
@@ -43,7 +40,6 @@
     <div>Ingresa tus <strong>nombres y apellidos</strong> exactamente como se muestran en tu documento.</div>
   </div>
 
-  <!-- Grupo: Nombres y Apellidos -->
   <div class="grid-2">
     <div class="input-group">
       <label>Nombres *</label>
@@ -58,7 +54,6 @@
     </div>
   </div>
 
-  <!-- Grupo: Fecha de Nacimiento -->
   <div class="input-group">
     <label class="label">Fecha de nacimiento *</label>
     <div class="grid-3">
@@ -78,33 +73,26 @@
     <div *ngIf="showError('birthYear') || showError('birthMonth') || showError('birthDay')" class="validation-error">Fecha de nacimiento requerida.</div>
   </div>
 
-  <!-- Grupo: Lugar de Residencia (Ubigeo) -->
   <div class="input-group">
-    <!-- El asterisco se quita de la etiqueta ya que no es requerido para el envío final -->
     <label class="label">Lugar de residencia</label> 
     <div class="grid-3">
-      <!-- DEPARTAMENTO: Control sin Validators.required -->
       <select formControlName="residenceDepartment">
         <option [ngValue]="null" disabled>Departamento</option>
         <option *ngFor="let dep of departments" [ngValue]="dep.code">{{ dep.name }}</option>
       </select>
       
-      <!-- PROVINCIA: Control sin Validators.required. Estado handled by TS. -->
       <select formControlName="residenceProvince">
         <option [ngValue]="null" disabled>Provincia</option>
         <option *ngFor="let prov of provinces" [ngValue]="prov.code">{{ prov.name }}</option>
       </select>
       
-      <!-- DISTRITO: Control sin Validators.required. Estado handled by TS. -->
       <select formControlName="residenceDistrict">
         <option [ngValue]="null" disabled>Distrito</option>
         <option *ngFor="let dist of districts" [ngValue]="dist.code">{{ dist.name }}</option>
       </select>
     </div>
-    <!-- Mensaje de error de Ubigeo eliminado -->
   </div>
 
-  <!-- Grupo: Teléfono -->
   <div class="grid-2">
     <div class="input-group">
       <label>Código</label>
@@ -118,7 +106,6 @@
     </div>
   </div>
 
-  <!-- Grupo: Género -->
   <div class="input-group">
     <label>Género *</label>
     <select formControlName="gender">
@@ -128,13 +115,11 @@
     <div *ngIf="showError('gender')" class="validation-error">Género es requerido.</div>
   </div>
 
-  <!-- Botón de Envío -->
   <button type="submit" class="btn-submit" 
           [disabled]="registrationForm.invalid || isSubmitting">
     {{ isSubmitting ? 'PROCESANDO...' : 'CONTINUAR' }}
   </button>
   
-  <!-- Token de Seguridad (para pruebas) -->
   <div class="input-group" style="margin-top: 20px;">
     <label>Token de Seguridad * (Solo para pruebas)</label>
     <input type="text" formControlName="token" placeholder="Generando token..." />

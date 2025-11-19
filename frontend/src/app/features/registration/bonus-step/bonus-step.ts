@@ -2,6 +2,7 @@
 import { Component, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+// Clase del componente BonusStep
 @Component({
   selector: 'app-bonus-step',
   standalone: true,
@@ -9,18 +10,13 @@ import { CommonModule } from '@angular/common';
   templateUrl: './bonus-step.html',
   styleUrls: ['./bonus-step.css']
 })
+// Clase del componente BonusStep
 export class BonusStep {
   @Output() bonusSelected = new EventEmitter<string>();
-  
-  // Estado para rastrear el bono seleccionado antes de confirmar
   selectedBonus: string | null = null; 
-
-  // Marca un bono como seleccionado (solo guarda el valor)
   selectBonus(bono: string) {
     this.selectedBonus = bono;
   }
-
-  // Emite el evento para avanzar al siguiente paso
   confirmSelection() {
     if (this.selectedBonus) {
       this.bonusSelected.emit(this.selectedBonus);

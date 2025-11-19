@@ -1,18 +1,19 @@
-// frontend/src/app/features/registration/register-step/register-step.ts
-
 import { Component, OnInit, ViewEncapsulation, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 
+// Importaciones de Servicios
 import { ClientService } from '../../../services/client.service';
-import { ClientRegisterRequest } from '../../../models/client.model';
 import { SecurityApiClient } from '../../../services/sdk/security.api-client';
+import { MetadataService } from '../../../services/metadata.service';
+import { UbigeoService } from '../../../services/ubigeo.service';
 
-// 🚨 RUTA DE UBIGEO DEL USUARIO
-import { UBIGEO_PERU, UbigeoItem } from '../../../data/ubigeo.data'; 
+// Importaciones de Modelos e Interfaces
+import { ClientRegisterRequest } from '../../../models/client.model';
+import { UbigeoItem } from '../../../interfaces/ubigeo.interface';
 
-
+// Componente para el paso de registro
 @Component({
   selector: 'app-register-step',
   imports: [CommonModule, ReactiveFormsModule],
@@ -21,6 +22,7 @@ import { UBIGEO_PERU, UbigeoItem } from '../../../data/ubigeo.data';
   styleUrl: './register-step.css',
   standalone: true
 })
+// Clase del componente RegisterStep
 export class RegisterStep implements OnInit {
 
   @Input() selectedBonus: string | null = null;
@@ -29,27 +31,42 @@ export class RegisterStep implements OnInit {
   isSubmitting = false;
   successMessage: string | null = null;
   errorMessage: string | null = null;
+  //datos del template
+  documentTypes: string[];
+  genders: string[];
+  years: number[];
+  months: number[] ;
+  days: number[];
 
-  // Variables para listas desplegables (existentes)
-  documentTypes = ['DNI', 'Carnet de extranjería'];
-  genders = ['Masculino', 'Femenino', 'Otro'];
-  years: number[] = Array.from({length: 100}, (_, i) => new Date().getFullYear() - 18 - i);
-  months: number[] = Array.from({length: 12}, (_, i) => i + 1);
-  days: number[] = Array.from({length: 31}, (_, i) => i + 1);
-
-  // Variables para listas de Ubigeo
   departments: UbigeoItem[] = [];
   provinces: UbigeoItem[] = [];
   districts: UbigeoItem[] = [];
 
+  //constructor con inyecciones de servicios
   constructor(
     private fb: FormBuilder,
     private clientService: ClientService,
-    private securityApiClient: SecurityApiClient
-  ) {}
+    private securityApiClient: SecurityApiClient,
+    private metadataService: MetadataService, 
+    private ubigeoService: UbigeoService 
+  ) {
+    this.documentTypes = this.metadataService.documentTypes;
+    this.genders = this.metadataService.genders;
+    this.years = this.metadataService.years;
+    this.months = this.metadataService.months;
+    this.days = this.metadataService.days;
+  }
 
+  //método de inicialización
   ngOnInit(): void {
-    // 1. Inicializar formulario
+    this.initializeForm();
+    this.fetchToken();
+    this.loadUbigeoData();
+    this.setupLocationListeners();
+  }
+
+  // Inicializa el formulario reactivo con validaciones
+  initializeForm(): void {
     this.registrationForm = this.fb.group({
       token: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(8)]],
       document_type: ['DNI', Validators.required],
@@ -60,35 +77,26 @@ export class RegisterStep implements OnInit {
       birthMonth: [null, Validators.required],
       birthDay: [null, Validators.required],
       phone_number: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(20)]],
-      
-      // 🚨 CORRECCIÓN CLAVE: Quitamos Validators.required de los 3 campos de Ubigeo
+  
       residenceDepartment: [null],
       residenceProvince: [{ value: null, disabled: true }],
       residenceDistrict: [{ value: null, disabled: true }],
       
       gender: [null, Validators.required],
     });
-
-    // 2. Obtener el token
-    this.fetchToken();
-
-    // 3. Cargar datos de Ubigeo y configurar escuchas
-    this.loadUbigeoData();
-    this.setupLocationListeners();
   }
 
+  // Carga los datos de Ubigeo usando el servicio
   loadUbigeoData(): void {
-    this.departments = UBIGEO_PERU;
+    // Usa el servicio
+    this.departments = this.ubigeoService.getDepartments();
     this.provinces = [];
     this.districts = [];
   }
 
-  // Configuración de la lógica anidada para Ubigeo (manejo de enable/disable para UX)
+  // Configura los listeners para los cambios en los selectores de ubicación
   setupLocationListeners(): void {
-    
-    // Escucha el cambio en el Departamento
     this.f['residenceDepartment'].valueChanges.subscribe(departmentCode => {
-      // 1. Resetear y deshabilitar niveles inferiores (reseteo silencioso)
       this.f['residenceProvince'].reset(null, { emitEvent: false });
       this.f['residenceDistrict'].reset(null, { emitEvent: false });
       this.f['residenceProvince'].disable();
@@ -97,11 +105,7 @@ export class RegisterStep implements OnInit {
       this.districts = [];
 
       if (departmentCode) {
-        // 2. Encontrar el departamento y cargar provincias (children)
-        const department = this.departments.find(d => d.code === departmentCode);
-        this.provinces = department?.children || [];
-
-        // Habilita la Provincia si hay provincias disponibles
+        this.provinces = this.ubigeoService.getChildren(departmentCode, this.departments);
         if (this.provinces.length > 0) {
           this.f['residenceProvince'].enable();
         }
@@ -110,31 +114,24 @@ export class RegisterStep implements OnInit {
 
     // Escucha el cambio en la Provincia
     this.f['residenceProvince'].valueChanges.subscribe(provinceCode => {
-      // 1. Resetear y deshabilitar nivel inferior (reseteo silencioso)
       this.f['residenceDistrict'].reset(null, { emitEvent: false });
       this.f['residenceDistrict'].disable();
       this.districts = [];
 
-      // Solo proceder si la provincia está seleccionada Y el control NO está deshabilitado
       if (provinceCode && this.f['residenceProvince'].enabled) {
-        // 2. Encontrar la provincia y cargar distritos (children)
-        const province = this.provinces.find(p => p.code === provinceCode);
-        this.districts = province?.children || [];
-        
-        // Habilita el Distrito si hay distritos disponibles
+        this.districts = this.ubigeoService.getChildren(provinceCode, this.provinces);
         if (this.districts.length > 0) {
           this.f['residenceDistrict'].enable();
         }
       }
     });
   }
-
+  // Obtiene el token de seguridad desde el servicio SDK
   fetchToken(): void {
     if (this.selectedBonus) {
         this.f['token'].setValue(this.selectedBonus);
         return;
     }
-
     this.securityApiClient.generateToken().subscribe({
         next: (response) => {
             const tokenGenerado = response.data.token;
@@ -147,16 +144,17 @@ export class RegisterStep implements OnInit {
     });
   }
 
+  // Getter para acceder fácilmente a los controles del formulario
   get f() {
     return this.registrationForm.controls;
   }
 
+  // Maneja el envío del formulario
   onSubmit(): void {
     this.isSubmitting = true;
     this.successMessage = null;
     this.errorMessage = null;
 
-    // 🚨 Diagnóstico: El formulario debe ser válido para continuar
     if (this.registrationForm.invalid) {
       this.isSubmitting = false;
       this.errorMessage = 'Por favor, complete correctamente todos los campos obligatorios.';
@@ -168,7 +166,6 @@ export class RegisterStep implements OnInit {
     const { birthYear, birthMonth, birthDay } = this.registrationForm.value;
     const birthDate = `${birthYear}-${birthMonth.toString().padStart(2, '0')}-${birthDay.toString().padStart(2, '0')}`;
 
-    // MAPEO DE LOS DATOS AL MODELO DE LA API (Solo los 7 campos requeridos)
     const apiData: ClientRegisterRequest = {
         token: this.f['token'].value,
         document_type: this.f['document_type'].value,
@@ -179,7 +176,6 @@ export class RegisterStep implements OnInit {
         phone_number: this.f['phone_number'].value,
     };
 
-    // 🚨 console.log para verificar los datos enviados
     console.log('Datos enviados a la API de registro:', apiData);
 
     this.clientService.attemptRegistration(apiData).subscribe({
@@ -206,9 +202,9 @@ export class RegisterStep implements OnInit {
     });
   }
 
+  // Método para verificar si un control del formulario tiene errores y ha sido tocado
   showError(controlName: string): boolean {
     const control = this.registrationForm.get(controlName);
-    // Solo muestra error si el campo es inválido Y ha sido tocado/modificado
     return !!(control && control.invalid && (control.dirty || control.touched));
   }
 }
