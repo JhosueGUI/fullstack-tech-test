@@ -87,9 +87,9 @@ select {
 }
 
 .warning-box {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
   border: 1px solid #fd8721;
   color:#fd8721 ;
   padding: 12px;

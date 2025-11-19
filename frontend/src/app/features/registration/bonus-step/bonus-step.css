@@ -81,6 +81,7 @@ p {
 
 .bonus-content-text {
   width: 63%;
+  gap: 8px;
   display: flex;
   flex-direction: column;
   margin-left: 10px;
@@ -111,10 +112,10 @@ p {
   color: rgb(85, 234, 127);
   font-family: Montserrat, sans-serif;
   font-style: italic;
+  height: 100%;
   font-size: 28px;
   font-weight: 600;
   white-space: nowrap;
-  overflow: hidden;
   text-overflow: ellipsis;
 }
 
