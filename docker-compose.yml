@@ -116,6 +116,16 @@ services:
         condition: service_started # Necesita RabbitMQ para consumir
     networks:
       - internal_network
+    # 4. SERVICIO FRONTEND (Angular + Nginx)
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: frontend_service
+    ports:
+      - "8080:80"
+    networks:
+      - internal_network
 
 # === VOLÚMENES Y REDES ===
 volumes:

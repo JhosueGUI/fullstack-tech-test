@@ -7,7 +7,7 @@ const tokenRoutes = [
         path: '/token',
         options: {
             cors: {
-                origin: ['http://localhost:4200'],
+                origin: ['http://localhost:4200', 'http://localhost:8080'],
             }
         },
         handler: createTokenHandler 
@@ -17,7 +17,7 @@ const tokenRoutes = [
         path: '/validate',
         options: {
             cors: {
-                origin: ['http://localhost:4200'],
+                origin: ['http://localhost:4200', 'http://localhost:8080'],
             }
         },
         handler: validateTokenHandler

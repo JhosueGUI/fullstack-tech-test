@@ -8,7 +8,7 @@ const clientRoutes = [
         path: '/clients',
         options: {
             cors: {
-                origin: ['http://localhost:4200'],
+                origin: ['http://localhost:4200', 'http://localhost:8080']
             },
             validate: {
                 payload: registerSchema,
