@@ -10,4 +10,4 @@ COPY . .
 
 # No se expone ningún puerto
 
-CMD [ "node", "server.js" ]
+CMD [ "node", "src/index.js" ]
